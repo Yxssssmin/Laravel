@@ -9,7 +9,7 @@ class CrudController extends Controller
 {
     public function index() {
         $datos=DB::select(" select * from producto ");
-        return view("welcome")->with("datos", $datos);
+        return view("home")->with("datos", $datos);
     }
 
     public function create(Request $request) {

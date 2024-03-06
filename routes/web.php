@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CrudController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", [CrudController::class, "index"])->name("crud.index");
+Auth::routes();
 
 // ruta para añadir un nuevo producto
 Route::post("/registrar-producto", [CrudController::class, "create"])->name("crud.create");
@@ -24,3 +25,6 @@ Route::post("/modificar-producto", [CrudController::class, "update"])->name("cru
 
 // ruta para borrar un producto
 Route::get("/eliminar-producto-{id}", [CrudController::class, "delete"])->name("crud.delete");
+
+
+Route::get('/home', [App\Http\Controllers\CrudController::class, 'index'])->name('crud.index');
