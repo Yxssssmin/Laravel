@@ -31,4 +31,42 @@ class CrudController extends Controller
         }
 
     }
+    public function update(Request $request) {
+        try {
+            $sql=DB::update(" update producto set nombre=?,precio=?,cantidad=? where id_producto=? ", [
+                $request->txtnombre,
+                $request->txtprecio,
+                $request->txtcantidad,
+                $request->txtcodigo
+            ]);
+
+            if($sql == 0) {
+                $sql = 1;
+            }
+
+        } catch (\Throwable $th) {
+            $sql = 0;
+        }
+
+        if($sql == true) {
+            return back()->with("correcto","Producto modificado correctamente");
+        } else {
+            return back()->with("incorrecto","Error al modificar");
+        }
+    }
+
+    public function delete($id) {
+        try {
+            $sql = DB::delete(" delete from producto where id_producto=$id ");
+        } catch (\Throwable $th) {
+            $sql = 0;
+        }
+
+        if($sql == true) {
+            return back()->with("correcto","Producto eliminado correctamente");
+        } else {
+            return back()->with("incorrecto","Error al eliminar");
+        }
+    }
 }
+

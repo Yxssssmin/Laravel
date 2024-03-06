@@ -21,6 +21,14 @@
     @if(session("incorrecto"))
         <div class="alert alert-danger">{{session("incorrecto")}}</div>
     @endif
+
+    <script>
+        var res=function(){
+            var not = confirm("estas seguro de eliminar?");
+            return null;
+        }
+    </script>
+
     <!-- Modal de registro datos -->
     <div class="modal fade" id="modalRegistrar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -77,25 +85,24 @@
             <tbody class="table-group-divider">
                 @foreach ($datos as $item)
                     <tr>
-                        <th>{{ $item->id_producto }}</th>
-                        <td>{{ $item->nombre }}</td>
-                        <td>{{ $item->precio }}</td>
-                        <td>{{ $item->cantidad }}</td>
+                        <th>{{$item->id_producto}}</th>
+                        <td>{{$item->nombre}}</td>
+                        <td>{{$item->precio}}</td>
+                        <td>{{$item->cantidad}}</td>
                         <td>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#modalEditar"
+                            <a href="" data-bs-toggle="modal" data-bs-target="#modalEditar{{$item->id_producto}}"
                                 class="btn btn-warning btn-sm">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
                         </td>
                         <td>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#modalBorrar"
-                                class="btn btn-danger btn-sm">
+                            <a href="{{route("crud.delete",$item->id_producto)}}" onclick="return res()" class="btn btn-danger btn-sm">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                         </td>
 
                         <!-- Modal de modificar datos -->
-                        <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        <div class="modal fade" id="modalEditar{{$item->id_producto}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -106,30 +113,31 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
+                                        <form action="{{route("crud.update")}}" method="POST">
+                                            @csrf
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Código del
                                                     producto</label>
                                                 <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    aria-describedby="emailHelp" name="txtcodigo">
+                                                    aria-describedby="emailHelp" name="txtcodigo" value="{{$item->id_producto}}" readonly>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Nombre del
                                                     producto</label>
                                                 <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    aria-describedby="emailHelp" name="txtnombre">
+                                                    aria-describedby="emailHelp" name="txtnombre" value="{{$item->nombre}}">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Precio del
                                                     producto</label>
                                                 <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    aria-describedby="emailHelp" name="txtprecio">
+                                                    aria-describedby="emailHelp" name="txtprecio" value="{{$item->precio}}">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Cantidad del
                                                     producto</label>
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    aria-describedby="emailHelp" name="txtcantidad">
+                                                <input type="number" class="form-control" id="exampleInputEmail1"
+                                                    aria-describedby="emailHelp" name="txtcantidad" value="{{$item->cantidad}}">
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
